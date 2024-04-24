@@ -101,6 +101,12 @@ from .user import \
 from .usertest import \
     UserTestHandler, \
     UserTestFileHandler
+from .questionnaire import \
+    AddQuestionnaire, \
+    AddQuestionNew
+from .contestnewquestion import \
+    AddContestQuestionHandler, \
+    ContestQuestionsHandler
 
 
 HANDLERS = [
@@ -135,6 +141,11 @@ HANDLERS = [
 
     (r"/contest/([0-9]+)/tasks", ContestTasksHandler),
     (r"/contest/([0-9]+)/tasks/add", AddContestTaskHandler),
+
+    # Contest's new questions
+
+    (r"/contest/([0-9]+)/new_questions", ContestQuestionsHandler),
+    (r"/contest/([0-9]+)/new_questions/add", AddContestQuestionHandler),
 
     # Contest's submissions / user tests
 
@@ -217,6 +228,11 @@ HANDLERS = [
 
     (r"/user_test/([0-9]+)(?:/([0-9]+))?", UserTestHandler),
     (r"/user_test_file/([0-9]+)", UserTestFileHandler),
+
+    # Questionnaires
+
+    (r"/questionnaire/add", AddQuestionnaire),
+    (r"/new_question/add", AddQuestionNew)
 
     # The following prefixes are handled by WSGI middlewares:
     # * /rpc, defined in cms/io/web_service.py

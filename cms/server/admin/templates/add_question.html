@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block core %}
+
+<div class="core_title">
+    <h1>New Question</h1>
+</div>
+
+<!-- We use "multipart/form-data" to have Tornado distinguish between missing and empty values. -->
+<form enctype="multipart/form-data" action="{{ url("new_question", "add" ) }}" method="post">
+    {{ xsrf_form_html|safe }}
+
+    <label for="question_name">Name of question</label>
+    <input type="text" id="question_name" name="question_name" required>
+    <br>
+
+    <label for="question_statement">Statement of question:</label>
+    <input type="file" id="question_statement" name="question_statement">
+    <br>
+
+    <label for="type_question">Type of question:</label>
+    <select id="type_question" name="type_question"
+        onchange="toggleNumberOptions(); this.value === 'options' ? showItemsOptions() : showItemsDevelopment()">
+        <option value="development">Development</option>
+        <option value="options">Options</option>
+    </select>
+    <br>
+
+    <div id="container">
+        <div id="options_container" style="display: none;">
+            <label for="number_options">Number of options:</label>
+            <input type="number" id="number_options" name="number_options" value="1" min="1" max="10" onchange="showItemsOptions()">
+            <br>
+            <div id="container1">
+            </div>
+            <br>
+        </div>
+        <label for="number_answers">Number of answers:</label>
+        <input type="number" id="number_answers" name="number_answers" value="1" min="1" max="10" onchange="showItemsDevelopment()">
+        <br>
+        <div id="container2">
+        </div>
+        <br>
+    </div>
+
+    <select id="questionnaire_name" name="questionnaire_name">
+        {% for questionnaire in questionnaires %}
+            <option value="{{ questionnaire }}">{{ questionnaire }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <div id="container3"></div>
+    <br>
+
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+    function showItemsOptions() {
+        var cantidad_opciones = document.getElementById("number_options").value;
+        var container = document.getElementById("container1");
+        container.innerHTML = "";
+        for (var i = 0; i < cantidad_opciones; i++) {
+            var input = document.createElement("input");
+            input.type = "text";
+            input.name = "options_option_" + (i + 1);
+            input.placeholder = "Opción " + (i + 1);
+            container.appendChild(input);
+        }
+    }
+
+    function showItemsDevelopment() {
+        var number_answers = document.getElementById("number_answers").value;
+        var container = document.getElementById("container2");
+        container.innerHTML = "";
+        for (var i = 0; i < number_answers; i++) {
+            var input = document.createElement("input");
+            input.type = "text";
+            input.name = "answer_" + (i + 1);
+            input.placeholder = "Respuesta " + (i + 1);
+            container.appendChild(input);
+        }
+    }
+
+    function toggleNumberOptions() {
+        var opcionesCantidad = document.getElementById("options_container");
+        var typeQuestion = document.getElementById("type_question").value;
+        opcionesCantidad.style.display = typeQuestion === "options" ? "block" : "none";
+    }
+
+    var questionnaires = JSON.parse('{{ questionnaires|tojson|safe }}');
+</script>
+
+{% endblock core %}

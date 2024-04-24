@@ -38,7 +38,7 @@ except ImportError:
     import tornado.web as tornado_web
 
 from cms import config, TOKEN_MODE_MIXED
-from cms.db import Contest, Submission, Task, UserTest
+from cms.db import Contest, Submission, Task, UserTest, QuestionNew
 from cms.locale import filter_language_codes
 from cms.server import FileHandlerMixin
 from cms.server.contest.authentication import authenticate_request
@@ -169,6 +169,15 @@ class ContestHandler(BaseHandler):
         if self.contest_url is not None:
             ret["contest_url"] = self.contest_url
 
+        questions_ids = self.contest.questions_ids
+
+        questions = self.sql_session.query(QuestionNew) \
+            .filter(QuestionNew.id.in_(questions_ids)) \
+            .order_by(QuestionNew.id) \
+            .all()
+        
+        ret["contest_questions"] = questions
+        
         ret["phase"] = self.contest.phase(self.timestamp)
 
         ret["printing_enabled"] = (config.printer is not None)

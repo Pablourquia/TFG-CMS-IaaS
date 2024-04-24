@@ -189,6 +189,14 @@ $(document).ready(function () {
                                 <a href="{{ contest_url("tasks", t_iter.name, "submissions") }}">{% trans %}Submissions{% endtrans %}</a>
                             </li>
         {% endfor %}
+        {% for t_iter in contest_questions %}
+                            <li class="nav-header">
+                                {{ t_iter.name }}
+                            </li>
+                            <li{% if page == "new_question" and question == t_iter %} class="active"{% endif %}>
+                                <a href="{{ contest_url("questions", t_iter.name, "description") }}">{% trans %}Statement{% endtrans %}</a>
+                            </li>
+        {% endfor %}
     {% endif %}
                             <li class="divider"></li>
                             <li{% if page == "documentation" %} class="active"{% endif %}>

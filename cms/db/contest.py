@@ -261,6 +261,11 @@ class Contest(Base):
     # These one-to-many relationships are the reversed directions of
     # the ones defined in the "child" classes using foreign keys.
 
+    questions_ids = Column(
+        ARRAY(Integer),
+        nullable=False,
+        default=[])
+
     tasks = relationship(
         "Task",
         collection_class=ordering_list("num"),

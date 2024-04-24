@@ -52,6 +52,9 @@ from .taskusertest import \
     UserTestDetailsHandler, \
     UserTestIOHandler, \
     UserTestFileHandler
+from .questions import \
+    QuestionDescriptionHandler, \
+    QuestionStatementHandler
 
 
 HANDLERS = [
@@ -71,6 +74,10 @@ HANDLERS = [
     (r"/tasks/(.*)/description", TaskDescriptionHandler),
     (r"/tasks/(.*)/statements/(.*)", TaskStatementViewHandler),
     (r"/tasks/(.*)/attachments/(.*)", TaskAttachmentViewHandler),
+
+    # Questions
+    (r"/questions/(.*)/description", QuestionDescriptionHandler),
+    (r"/questions/(.*)/statement", QuestionStatementHandler),
 
     # Task submissions
 

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block core %}
+<div class="core_title">
+  <h1>Questions list of <a href="{{ url("contest", contest.id) }}">{{ contest.name }}</a></h1>
+</div>
+
+<form action="{{ url("contest", contest.id, "new_questions", "add") }}" method="POST">
+  {{ xsrf_form_html|safe }}
+  Add a new question:
+  <select name="question_id">
+    <option value="null" selected>Select a new question</option>
+    {% for t in unassigned_questions %}
+    <option value="{{ t.id }}">
+      {{ t.name }}
+    </option>
+    {% endfor %}
+  </select>
+  <input type="submit"
+{% if not admin.permission_all %}
+         disabled
+{% endif %}
+         value="Add question" />
+</form>
+
+<form action="{{ url("contest", contest.id, "new_questions") }}" method="POST">
+  {{ xsrf_form_html|safe }}
+  Remove selected question from the contest:
+  <input type="submit" name="operation"
+{% if not admin.permission_all %}
+         disabled
+{% endif %}
+         value="Remove from contest" />
+
+  <br>
+  <table class="bordered">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in contest_questions %}
+      <tr>
+        <td>
+          <input type="radio" name="question_id" value="{{ t.id }}"/>
+        </td>
+        <td>{{ t.name }}</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</form>
+{% endblock core %}

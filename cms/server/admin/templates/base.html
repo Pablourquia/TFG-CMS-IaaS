@@ -220,6 +220,22 @@ $(document).ready(init);
             </a>
           </li>
 {% endif %}
+        <h1><a class="menu_link">Questionnaires</a></h1>
+{% if admin.permission_all %}
+          <li class="menu_entry">
+            <a class="menu_link" href="{{ url("questionnaire", "add") }}">
+              (create new questionnaire...)
+            </a>
+          </li>
+{% endif %}
+<h1><a class="menu_link">Questions</a></h1>
+{% if admin.permission_all %}
+          <li class="menu_entry">
+            <a class="menu_link" href="{{ url("new_question", "add") }}">
+              (create new question...)
+            </a>
+          </li>
+{% endif %}
         </ul>
         {% else %}
           <ul class="menu">
@@ -230,6 +246,7 @@ $(document).ready(init);
             <li class="menu_entry"><a class="menu_link" href="{{ url("contest", contest.id, "users") }}">Users</a></li>
             <li class="menu_entry"><a class="menu_link" href="{{ url("contest", contest.id, "tasks") }}">Tasks</a></li>
             <li class="menu_entry"><a class="menu_link" href="{{ url("contest", contest.id, "announcements") }}">Announcements</a></li>
+            <li class="menu_entry"><a class="menu_link" href="{{ url("contest", contest.id, "new_questions") }}">New Questions</a></li>
             <li class="menu_entry">
               <span id="unanswered_questions" class="unread"
                 {% if unanswered == 0 %} style="display: none;" {% endif %}>

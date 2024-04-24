@@ -1,0 +1,73 @@
+{% extends "contest.html" %}
+
+{% set page = "new_question" %}
+
+{% block core %}
+
+<div class="span9 task_description">
+
+
+<div class="page-header">
+    <h1>{% trans name=question.name%}{{ name }} <small>Descripción</small>{% endtrans %}</h1>
+</div>
+
+<h2>{% trans %}Statement{% endtrans %}</h2>
+
+{% if not question.question %}
+<div class="row statement no_statements">
+    <div class="span9">
+        {% trans %}no hay ningún enunciado disponible{% endtrans %}
+    </div>
+</div>
+{% else %}
+<div class="row statement one_statement">
+    <div class="span9">
+        <a href="{{ contest_url("questions", question.name, "statement") }}"
+            class="btn btn-large btn-success">{% trans %}Descargar enunciado{% endtrans %}</a>
+    </div>
+</div>
+{% endif %}
+
+<h2>{% trans %}Respuestas:{% endtrans %}</h2>
+
+<form enctype="multipart/form-data" action="{{ url("questions", question.name, "description" ) }}" method="post">
+    {{ xsrf_form_html|safe }}
+
+    {% if question.type == "options" %}
+        <label for="options">Seleccione la opción correcta:</label><br>
+        {% for t in question.options %}
+            <input type="radio" id="{{ t }}" name="options" value="{{ t }}">
+            <label for="{{ t }}">{{ t }}</label><br>
+        {% endfor %}
+    {% endif %}
+
+    {% if question.type == "development" %}
+        {% for i in range(question.number_of_inputs) %}
+            <label for="question{{ i }}">Respuesta {{ i + 1 }}</label>
+            <input type="text" id="question{{ i }}" name="question{{ i }}" required>
+            <br>
+        {% endfor %}
+    {% endif %}
+
+
+    <br>
+    <br>
+    <button type="submit">Enviar</button>
+
+</form>
+
+<div class="row statement one_statement">
+    <div class="span9">
+        {% if boolean_vector[question.id] %}
+            <button type="button" style="background-color: green;">Respuesta Correcta</button>
+        {% else %}
+            <button type="button" style="background-color: red;">Respuesta Incorrecta</button>
+        {% endif %}
+    </div>
+</div>
+</div>
+
+{% endblock %}
+            
+
+    
